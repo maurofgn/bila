@@ -201,6 +201,9 @@ img {
 .nav a.create {
 	background-image: url(../images/skin/database_add.png);
 }
+.nav a.print{
+	background-image: url(../images/skin/print.png);
+}
 
 /* CREATE/EDIT FORMS AND SHOW PAGES */
 
@@ -567,7 +570,7 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
-.buttons .delete, .buttons .edit, .buttons .save {
+.buttons .delete, .buttons .edit, .buttons .save , .buttons .print {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
