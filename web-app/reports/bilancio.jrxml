@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bilancio" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b4f23b7e-c6c9-4982-be74-861bd921f4e3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="reportId" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="amountYear" class="java.math.BigDecimal"/>
+	<field name="amountYearPre" class="java.math.BigDecimal"/>
+	<field name="amountDelta" class="java.math.BigDecimal"/>
+	<field name="accountCee" class="org.mesis.bila.AccountCee"/>
+	<field name="creditDebit" class="org.mesis.bila.CreditDebit"/>
+	<field name="level" class="java.lang.Integer"/>
+	<field name="nodeType" class="org.mesis.bila.NodeType"/>
+	<group name="nodeType">
+		<groupExpression><![CDATA[$F{nodeType}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="1">
+				<break>
+					<reportElement uuid="09c5a83f-e007-423b-a58a-75482bb28e03" x="0" y="0" width="100" height="1"/>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a07fc982-a22d-4339-8cfd-86c952486d57" x="107" y="0" width="340" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title} + " " + $F{nodeType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="9df7d58c-ad37-410f-b4f3-dd5150975c41" x="0" y="0" width="53" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[cod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7c0a414a-2bdc-47c1-90a0-bac7da92b0c9" x="53" y="0" width="169" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descrizione]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="26438b51-56cf-49b5-80b9-b971d37df0ab" x="222" y="0" width="111" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[amountYear]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0687412-35d0-4b9d-a6a0-759dc23f1e3f" x="333" y="0" width="111" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[amountYearPre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="001ca9a2-509a-4c3b-84d8-96fde909e772" x="444" y="0" width="111" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Differenza]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcf00551-e757-438a-84b5-4db8e5454924" x="0" y="0" width="53" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountCee}.code]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="304e8823-be51-443b-bf48-8b9c907d1f1f" x="53" y="0" width="169" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e16d1ad3-2cde-4fa4-b04d-7219bd435b7f" x="222" y="0" width="111" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{amountYear}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c8545cc3-d136-4c1e-accb-89df2a87d3a1" x="333" y="0" width="111" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{amountYearPre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2c4d2870-4fb4-4393-ad5e-6063792276ce" x="444" y="0" width="111" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{amountDelta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a7d68127-ce6f-4724-9570-cbee59133df3" x="308" y="0" width="247" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportId}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>
