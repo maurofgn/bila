@@ -79,6 +79,16 @@ http://localhost:8080/bila/jasperReport/generateReport?_format=PDF&_name=bilanci
 
 </div>
 
+<div class="fieldcontain required">
+	<label for="year">
+		<g:message code="report.year.label" default="Anno" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="postalCode" type="number" min="2014" max="2015" value="${year}" required=""/>
+
+
+</div>
+
 
 <%--
 		<a href="/bila/jasperReport/generateReport?_format=XLS&_name=bilancio&_file=bilancio">
