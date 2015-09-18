@@ -16,7 +16,8 @@ class Report {
 		description(maxSize:60, nullable: false, blank: false)
 		modelName(maxSize:60, nullable: false, blank: false)
 		outputFileName(maxSize:60, nullable: false, blank: false)
-		formatType(maxSize:4, nullable: false, blank: false, inList: ["PDF", "HTML", "XML","CSV", "XLS", "RTF","TEXT", "ODT", "ODS","DOCX", "XLSX", "PPTX"])
+//		formatType(maxSize:4, nullable: false, blank: false, inList: ["PDF", "HTML", "XML","CSV", "XLS", "RTF","TEXT", "ODT", "ODS","DOCX", "XLSX", "PPTX"])
+		formatType(maxSize:4, nullable: false, blank: false, inList: ["PDF", "HTML", "XML","CSV", "XLS", "ODT", "ODS","DOCX", "XLSX", "PPTX"])
 		active()
 	}
 	
