@@ -100,7 +100,7 @@ class AccountCee implements Comparable<AccountCee>{
 			CreditDebit cd = c.creditDebit(year)
 //			println("conto: ${c} saldo: ${c.creditDebit}")
 			BilaRow br = new BilaRow(accountCee: c, creditDebit: cd, 
-				nodeType: this.nodeType, level: c.level, code:c.code, description:c.description, summary:c.summary, total:c.total,
+				nodeType: this.nodeType.toString(), level: c.level, code:c.code, description:c.description, summary:c.summary, total:c.total,
 				amountYear:cd.balanceYear, amountYearPre:cd.balanceYearPrev, amountDelta: cd.balanceYear-cd.balanceYearPrev
 				);
 			retValue << br
