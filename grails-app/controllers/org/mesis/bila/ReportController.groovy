@@ -16,7 +16,15 @@ class ReportController {
     }
 
     def show(Report reportInstance) {
-        respond reportInstance
+		
+		//sarebbe meglio stabilire il minimo ed il max con una select su min(year(doc.dateReg)) e max(year(doc.dateReg))
+		def d = new GregorianCalendar()
+		Integer year = d.get(GregorianCalendar.YEAR)
+		Integer yearMax = year
+		Integer yearMin = year -1
+		
+//        respond reportInstance
+		 [ reportInstance:reportInstance, year:year, yearMax:yearMax, yearMin:yearMin ]
     }
 
     def create() {
