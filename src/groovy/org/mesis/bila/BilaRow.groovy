@@ -1,7 +1,7 @@
 package org.mesis.bila
 
 class BilaRow {
-	NodeType nodeType
+	String nodeType
 	int level
 	String code
 	String description
