@@ -84,7 +84,8 @@ http://localhost:8080/bila/jasperReport/generateReport?_format=PDF&_name=bilanci
 		<g:message code="report.year.label" default="Anno" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="postalCode" type="number" min="2014" max="2015" value="${year}" required=""/>
+
+	<g:field name="year" type="number" min="${yearMin}" max="${yearMax}" value="${year}" required=""/>
 
 
 </div>
