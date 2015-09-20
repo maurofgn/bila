@@ -15,12 +15,14 @@ class JasperReportController {
     /* serves the report document for download*/
     def generateReport() {
 		
-		int year = params.year
-		
-		if (!year) {
-			year = new Date()[Calendar.YEAR]
-			params.year = year
-		}
+		Integer year =  params.year ? Integer.parseInt(params.year) : new Date()[Calendar.YEAR];
+				
+//		if (!year) {
+//			year = new Date()[Calendar.YEAR]
+//			params.year = year
+//		} else {
+//			Integer.parseInt(params.year);
+//		}
 	
 //parametri identificativi del template
 
