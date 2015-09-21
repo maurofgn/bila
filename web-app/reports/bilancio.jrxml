@@ -36,44 +36,16 @@ FROM
 	<parameter name="REPORT_HOME" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="AD_Client_ID" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="year" class="java.lang.Integer"/>
-	<queryString>
-		<![CDATA[SELECT *
-FROM bilarow
-order by case
-when nodeType = 'ATTIVO' then 1
-when nodeType = 'PASSIVO' then 2
-when nodeType = 'COSTI' then 3
-when nodeType = 'RICAVI' then 4
-end,
-lev,code, summary]]>
-	</queryString>
-	<field name="nodeType" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="lev" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="code" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="description" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="amountYear" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="amountYearPre" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="amountDelta" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="summary" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<parameter name="yearPrev" class="java.lang.String"/>
+	<field name="nodeType" class="java.lang.String"/>
+	<field name="level" class="java.lang.Integer"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="amountYear" class="java.lang.Double"/>
+	<field name="amountYearPre" class="java.lang.Double"/>
+	<field name="amountDelta" class="java.lang.Double"/>
+	<field name="summary" class="java.lang.Boolean"/>
+	<field name="total" class="java.lang.Boolean"/>
 	<group name="nodeType" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{nodeType}]]></groupExpression>
 		<groupHeader>
@@ -112,7 +84,7 @@ lev,code, summary]]>
 				<reportElement uuid="a9be4aed-1744-49ea-a93c-a7d479602c59" x="412" y="0" width="143" height="25"/>
 				<componentElement>
 					<reportElement uuid="ddcdf997-ea58-425f-9e92-a87ae67c1057" x="0" y="0" width="143" height="25"/>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 						<datasetRun subDataset="Avis" uuid="448b20ea-c141-49f9-aff7-a31e9e9c9526">
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
@@ -141,14 +113,14 @@ lev,code, summary]]>
 				<text><![CDATA[Descrizione]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="59df620b-ce43-4965-bec5-abfb3dae26ce" x="375" y="0" width="60" height="20"/>
+				<reportElement uuid="db0c9ddc-6612-4a38-9061-8ff7d9d8b26a" x="375" y="0" width="60" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[$P{year}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="dbe90e85-8f55-49d7-beed-171055b19e0d" x="435" y="0" width="60" height="20"/>
+				<reportElement uuid="f222fa2f-1bc5-44f3-aca4-bd28bb47b683" x="435" y="0" width="60" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none"/>
-				<textFieldExpression><![CDATA[$P{year}-1]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{yearPrev}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="aa2b1f32-da85-4f32-a7c6-261bc5e8cc96" x="495" y="0" width="60" height="20"/>
@@ -196,14 +168,9 @@ lev,code, summary]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{amountDelta}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="9aea6fa6-d71b-4dea-a173-8aa0d8387e92" x="289" y="0" width="100" height="16"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="20">
-			<printWhenExpression><![CDATA[$F{summary}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{summary} && $F{level} > 0 && !$F{total}]]></printWhenExpression>
 			<rectangle>
 				<reportElement uuid="895fa3ee-2194-41b6-84ce-2dba0a0d96d2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="2" width="555" height="16" backcolor="#F0F0F0">
 					<printWhenExpression><![CDATA[$V{COLUMN_COUNT} %2 == 0]]></printWhenExpression>
@@ -253,16 +220,9 @@ lev,code, summary]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{amountDelta}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="9aea6fa6-d71b-4dea-a173-8aa0d8387e92" x="293" y="4" width="100" height="16">
-					<printWhenExpression><![CDATA[false]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="24">
-			<printWhenExpression><![CDATA[$F{summary} && $F{total}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{summary} && $F{total} && $F{level} < 0]]></printWhenExpression>
 			<rectangle>
 				<reportElement uuid="895fa3ee-2194-41b6-84ce-2dba0a0d96d2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="4" width="555" height="16" backcolor="#F0F0F0">
 					<printWhenExpression><![CDATA[$V{COLUMN_COUNT} %2 == 0]]></printWhenExpression>
@@ -300,18 +260,36 @@ lev,code, summary]]>
 				<textFieldExpression><![CDATA[$F{amountDelta}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5e5f2a51-197f-4ee3-932f-9d70575d5b7d" x="0" y="4" width="53" height="20"/>
+				<reportElement uuid="5e5f2a51-197f-4ee3-932f-9d70575d5b7d" x="0" y="4" width="53" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Totale]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="9aea6fa6-d71b-4dea-a173-8aa0d8387e92" x="289" y="4" width="100" height="16">
-					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{summary} && $F{level} > 0 && $F{total}]]></printWhenExpression>
+			<rectangle>
+				<reportElement uuid="895fa3ee-2194-41b6-84ce-2dba0a0d96d2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="2" width="555" height="16" backcolor="#F0F0F0">
+					<printWhenExpression><![CDATA[$V{COLUMN_COUNT} %2 == 0]]></printWhenExpression>
 				</reportElement>
-				<textElement/>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="fd216152-03de-4883-9a5c-7415bc42bb2b" x="0" y="0" width="53" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1d90a795-a256-4ff3-bd03-4529336dd5e9" x="53" y="0" width="322" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -377,6 +355,6 @@ lev,code, summary]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="10" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
