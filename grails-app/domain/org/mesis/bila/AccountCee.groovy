@@ -99,8 +99,9 @@ class AccountCee implements Comparable<AccountCee>{
 		allSons.each { c -> 
 			CreditDebit cd = c.creditDebit(year)
 //			println("conto: ${c} saldo: ${c.creditDebit}")
-			BilaRow br = new BilaRow(accountCee: c, creditDebit: cd, 
-				nodeType: this.nodeType.toString(), level: c.level, code:c.code, description:c.description, summary:c.summary, total:c.total,
+			BilaRow br = new BilaRow(
+				accountCee: c, creditDebit: cd, 
+				nodeType: this.nodeType, level: c.level, code:c.code, description:c.description, summary:c.summary, total:c.total,
 				amountYear:cd.balanceYear, amountYearPre:cd.balanceYearPrev, amountDelta: cd.balanceYear-cd.balanceYearPrev
 				);
 			retValue << br
@@ -109,10 +110,12 @@ class AccountCee implements Comparable<AccountCee>{
 			
 			parentsTotal.each{ pt ->
 				cd = pt.creditDebit
-				br = new BilaRow(accountCee: pt, creditDebit: cd, 
+				br = new BilaRow(
+					accountCee: pt, creditDebit: cd, 
 					nodeType: this.nodeType, level: pt.level, code:pt.code, description:pt.description, summary:pt.summary, total:pt.total
 					,amountYear:cd.balanceYear, amountYearPre:cd.balanceYearPrev, amountDelta: cd?.balanceYear-cd?.balanceYearPrev
 					);
+
 				retValue << br
 			}
 		}
