@@ -20,6 +20,18 @@ order by nodeType, code
 
 SELECT nodeType,lev,summary, count(*) FROM bilarow group by nodeType,lev,summary order by nodeType,lev,summary
 
+--usata x il report
+SELECT *
+FROM bilarow
+order by case
+when nodeType = 'ATTIVO' then 1
+when nodeType = 'PASSIVO' then 2
+when nodeType = 'COSTI' then 3
+when nodeType = 'RICAVI' then 4
+end,
+lev,code, summary
+
+
 SELECT * 
 FROM bilarow 
 order by case 
