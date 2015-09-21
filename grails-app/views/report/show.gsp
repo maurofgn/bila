@@ -22,19 +22,10 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			
-			
-			
-<%--			
-http://localhost:8080/bila/jasperReport/generateReport?_format=PDF&_name=bilancio_2015&_file=bilancio 
---%>
-			
 		<g:form action="generateReport" controller="jasperReport"  >
-		
-
 		
 		
 			<ol class="property-list report">
-			
 			
 				<g:if test="${reportInstance?.code}">
 				<li class="fieldcontain">
@@ -54,95 +45,41 @@ http://localhost:8080/bila/jasperReport/generateReport?_format=PDF&_name=bilanci
 				</li>
 				</g:if>
 			
-				<g:hiddenField name="_file" value="${reportInstance?.modelName}" />
+			<g:hiddenField name="_file" value="${reportInstance?.modelName}" />
 				
-			
+			<div class="fieldcontain ${hasErrors(bean: reportInstance, field: 'outputFileName', 'error')} required">
+				<label for="outputFileName">
+					<g:message code="report.outputFileName.label" default="Output File Name" />
+					<span class="required-indicator">*</span>
+				</label>
+				<g:textField name="_name" maxlength="60" required="" value="${reportInstance?.outputFileName}"/>
 
+			</div>
 
-				
+			<div class="fieldcontain ${hasErrors(bean: reportInstance, field: 'formatType', 'error')} required">
+				<label for="formatType">
+					<g:message code="report.formatType.label" default="Format Type" />
+					<span class="required-indicator">*</span>
+				</label>
+				<g:select name="_format" from="${reportInstance.constraints.formatType.inList}" required="" value="${reportInstance?.formatType}" valueMessagePrefix="report.formatType"/>
 
-<div class="fieldcontain ${hasErrors(bean: reportInstance, field: 'outputFileName', 'error')} required">
-	<label for="outputFileName">
-		<g:message code="report.outputFileName.label" default="Output File Name" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:textField name="_name" maxlength="60" required="" value="${reportInstance?.outputFileName}"/>
+			</div>
 
-</div>
+			<div class="fieldcontain required">
+				<label for="year">
+					<g:message code="report.year.label" default="Anno" />
+					<span class="required-indicator">*</span>
+				</label>
 
-<div class="fieldcontain ${hasErrors(bean: reportInstance, field: 'formatType', 'error')} required">
-	<label for="formatType">
-		<g:message code="report.formatType.label" default="Format Type" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select name="_format" from="${reportInstance.constraints.formatType.inList}" required="" value="${reportInstance?.formatType}" valueMessagePrefix="report.formatType"/>
-
-</div>
-
-<div class="fieldcontain required">
-	<label for="year">
-		<g:message code="report.year.label" default="Anno" />
-		<span class="required-indicator">*</span>
-	</label>
-
-	<g:field name="year" type="number" min="${yearMin}" max="${yearMax}" value="${year}" required=""/>
-
-
-</div>
-
-
-<%--
-		<a href="/bila/jasperReport/generateReport?_format=XLS&_name=bilancio&_file=bilancio">
-			XLS
-		</a>
-		|
-		<a href="/bila/jasperReport/generateReport?_format=PDF&_name=bilancio_2015&_file=bilancio">
-			PDF
-		</a>
-		
-				<g:if test="${reportInstance?.dateCreated}">
-				<li class="fieldcontain">
-					<span id="dateCreated-label" class="property-label"><g:message code="report.dateCreated.label" default="Date Created" /></span>
-					
-						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${reportInstance?.dateCreated}" type="datetime" style="SHORT"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${reportInstance?.lastUpdated}">
-				<li class="fieldcontain">
-					<span id="lastUpdated-label" class="property-label"><g:message code="report.lastUpdated.label" default="Last Updated" /></span>
-					
-						<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${reportInstance?.lastUpdated}" type="datetime" style="SHORT" /></span>
-					
-				</li>
-				</g:if>
---%>				
+				<g:field name="year" type="number" min="${yearMin}" max="${yearMax}" value="${year}" required=""/>
+			</div>
 			
 			</ol>
-			
-			
 			<fieldset class="buttons">
-<%--			
-				<g:link class="print" action="generateReport" controller="jasperReport" ><g:message code="default.button.print.label" default="Print" /></g:link>
---%>
 				<g:submitButton name="create" class="print" value="${message(code: 'default.button.print.label', default: 'print')}" />
 			</fieldset>
 		</g:form>
-			
-			
-			
-<%--			
-			
-			<g:form url="[resource:reportInstance, action:'delete']" method="DELETE">
-				<fieldset class="buttons">
-				
-				
-					<g:link class="print" action="generateReport" controller="jasperReport" params="[_format:'PDF', _name:'bilancio_2015', _file:'bilancio']"><g:message code="default.button.print.label" default="Print" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
---%>			
+		
 		</div>
 	</body>
 </html>
