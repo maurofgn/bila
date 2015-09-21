@@ -35,7 +35,7 @@ environments {
 			logSql = false
 		}
 
-		
+//		jasper.dir.reports = "/path/to/jrxml/file"			//definisce la directory dei file jrxml per jasper
 		
     }
     test {
