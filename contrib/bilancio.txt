@@ -1,0 +1,118 @@
+====== bilancio ======
+Created giovedì 03 settembre 2015
+
+===== Bilancio AVIS =====
+(esempio: [[./Avis Comunale Morrovalle - Bilancio 31 12 2013.xls]]  )
+
+La compilazione del bilancio è manuale, ma in corrispondenza di ogni voce, oltre al valore, vanno aggiunte delle note che fanno da giustificativo
+Deve esistere la possibilità di aggiungere una voce di bilancio, ma questo va fatto solo da un utente amministratore o in qualche altro modo comunque con un minimo di protezione.
+
+Voci di bilancio cee organizzate in forma grafo di tipo albero con le voci root, patrimoniale, economico, attività, passività, costi e ricavi fisse.
+Piano dei conti (solo conti) utilizzabili per l'input delle righe doc. con il riferimento (null) ad una voce di bilancio (not summary) 
+Documenti (testate e righe) con le righe che hanno necessariamente un riferimento al piano dei conti
+Report del bilancio. Verificare che tutte le voci del piano dei conti abbiano il riferimento alla voce di bilancio not null, diversamente non è possibile stampare il bilancio, quindi elencare le voci del pc che hanno bisogno del link (max 100, oltre il quale va dato un errore generico, "link tra pc e bilancio cee mancante")
+
+
+===== Regola dare/avere =====
+
+vedi: http://www.professionisti.it/vetrine/239244/file/Dare_Avere.pdf
+
+{{./pasted_image.png}}
+
+{{./pasted_image001.png}}
+
+
+[*] file groovy per model
+[*] crezione applicazione crud
+[ ] test
+[*] installazione iReport e jasperReport
+	[*] iReport 5.0.0
+		Ha bisogno di java7 e non java8 Per far si che iReport usi java7, dopo aver scaricato java7, modificare il file di configurazione di iReport {IREPORT_HOME}\etc\ireport.conf e modificare il parametro jdkhome (senza commento)
+		#jdkhome="/path/to/jdk"
+		per esempio: jdkhome="C:/Program Files/Java/jdk1.7.0_79"
+	[*] jasperReport 1.11.0
+	[ ] iReport va in errore quando cerca di interpretare le classi generate da grails, necessarie per disegnare il report. Molto probabilmente la causa è dovuta alla versione 8 di java che non è comprensibile per java 7 usato da iReport
+
+===== istallazione di jsReport in grails =====
+[*] All'interno della sessione plungins (di conf\BuildConfig.groovy) va inserito:
+	* compile ":jasper:1.11.0"
+	* runtime ":jasper:1.11.0"
+	per aggiornare/download i jar eseguire: grails refresh-dependencies
+
+
+===== test da console grails =====
+To test services in the console you need to do this:
+	def service = ctx.getBean("mySecretService")
+	def result = service.secretSquirell()
+
+
+===== logica e vincoli =====
+
+==== conti di bilancio cee ====
+[ ] parent
+	[ ] not null
+	[ ] solo attivi
+	[ ] solo di tipo summary
+	[ ] ordinati per name
+	[ ] in variazione, un parent non può essere se stesso o uno dei suoi figli
+[ ] seqNo x insert = max seqNo dello stesso parent + 10
+[ ] campo debit visibile solo se node_type is null
+[ ] campo total visibile solo se summary = true
+[ ] ROOT non visibile
+[ ] nodeType not null ⇒ elimina non permesso 
+[ ] per modifica parent  ⇒ readOnly active ⇒ readOnly
+[ ] vedi [[http://api.jquery.com/change/|jQuery]] x nascondere/visualizzare una parte dei campi della form
+
+==== bootStrap ====
+[*] load tipi doc standard
+[*] caricamento dell'albero voci di bilancio 
+[*] dall'albero caricare i conti del piano dei conti a partire dai nodi non summary (senza figli)
+[*] solo per ambiente develop o test caricare i documenti di test per l'anno in corso e per l'anno precedente
+
+==== anagrafica Avis ====
+[*] creazione e popolamento della tabella anagrafica Avis
+[*] non è permessa la delete e la creazione è possibile solo se non esiste nessun record
+
+==== autoTimestamp ====
+[*] Le tabelle potrebbero avere (attualmente non ci sono)
+	  Date dateCreated
+	  Date lastUpdated
+	  static mapping = {
+		  autoTimestamp true
+	   }
+
+
+===== log =====
+Nel file DataSource.groovy ho aggiunto a scopo debug
+[x] format_sql = true nella sessione hibernate
+[x] logSql = true nella sessione development e production
+[ ] aggiungere il log per org.mesis.bila, possibilmente su file(ruotato x giorno) e console
+
+==== Documenti ====
+[*] formato date gg/mm/dd (dipende dal file properties)
+[*] Note non obbligatorio
+[ ] Data reg. >= data doc
+[ ] La data doc non può avere l'anno più vecchio di 2 rispetto all'anno corrente
+[ ] Le righe possono essere create solo se la testata è definita e non deve essere possibile definirla a livello di riga, ma deve essere visibile in readOnly 
+[ ] La quadratura del documento sarebbe opportuna, ma per ora è tralasciata
+[ ] Il documento ha un totale, il quale deve essere uguale alla sommatoria del dare ed anche dell'avere questo determina il valore del camp formula valid
+[*] Document.toString ha il formato della data inglese (cambiato su messages.properties)
+[ ] Le righe del documento devono gestire il dare/avere o perchè è definito o perchè l'importo ha il segno e comunque sul db l'importo deve essere sempre positivo, se dovesse arrivare negativo, prima del save va reso positivo ed invertito il dare/avere
+
+===== Tipo documento =====
+[ ] La delete va in errore, aggiungere il controllo sull'esistenza dei documenti che lo referenziano
+
+==== Reports ====
+[ ] modificare jasperReport\index.gsp con anno, formato, nome file di output,  modello report (jrxml)
+[ ] bilancio cee
+[ ] bilancio con conti pc e dettaglio doc di riferimento
+[ ] verificare come passare solo la collection di bean
+
+===== messages.properties =====
+properties editor (30$)
+
+==== Sitemesh ====
+da vedere
+
+==== Sicurezza ====
+Implementata a titolo di esempio sul controller User. Usato l'ottimo tutorial di questo [[http://www.ibm.com/developerworks/library/j-grails04289/|link]]
