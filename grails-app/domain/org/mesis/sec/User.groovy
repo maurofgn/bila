@@ -6,7 +6,7 @@ class User {
     login(unique:true)
     password(password:true)
     name()
-    role(inList:["user", "admin"])
+    role(inList:[ "admin"])
   }
   
 //  static hasMany = [entries:Entry]
@@ -14,7 +14,7 @@ class User {
   String login
   String password
   String name
-  String role
+  String role = "user"
   
   String toString(){
     name

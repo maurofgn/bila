@@ -10,15 +10,22 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	
-//	def beforeInterceptor = [action:this.&auth, except:["index", "list", "show"]]
+	def beforeInterceptor = [action:this.&auth, except:["index", "show", "login", "authenticate", "logout"]]
 
 	def auth() {
 		if(!session.user) {
 		  redirect(controller:"user", action:"login")
 		  return false
 		}
+		
+		if( !(session?.user?.role == "Admin") ){
+		  flash.message = "Devi essere un amministratore per eseguire questa attività."
+		  redirect(controller:"user", action:"index")
+		  return false
+		}
 	}
-
+	
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userInstanceCount: User.count()]
@@ -38,11 +45,12 @@ class UserController {
 		def user = User.findByLoginAndPassword(params.login, params.password)
 		if(user){
 			  session.user = user
-			  flash.message = "Hello ${user.name}!"
-//			  redirect(controller:"entry", action:"list")
-			  redirect(uri: "/")
+			  flash.message = "Ben tornato ${user.name}!"
+//			  redirect(controller:"user", action:"index")
+//			  redirect(uri: "/")
+			  redirect(controller:"user", action:"index")    
 			}else{
-			  flash.message = "Sorry, ${params.login}. Please try again."
+			  flash.message = "Account non valido, ${params.login}. Prova ancora."
 			  redirect(action:"login")
 			}
 	}
